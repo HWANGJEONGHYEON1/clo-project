@@ -33,6 +33,9 @@ dependencies {
     implementation 'com.h2database:h2'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
+    // validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
     // mapstruct
     implementation("org.mapstruct:mapstruct:${mapstructVersion}")
     annotationProcessor("org.mapstruct:mapstruct-processor:${mapstructVersion}")
@@ -40,11 +43,12 @@ dependencies {
     // swagger
     implementation("io.springfox:springfox-boot-starter:${swaggerVersion}")
 
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.13.1'
+
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
 }
 
 tasks.named('test') {
