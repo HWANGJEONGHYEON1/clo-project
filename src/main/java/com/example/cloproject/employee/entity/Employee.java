@@ -1,4 +1,4 @@
-package com.example.cloproject.employee;
+package com.example.cloproject.employee.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -23,10 +23,7 @@ public class Employee {
     @Column(name = "tel")
     private String tel;
 
-    @JsonProperty("joined")
     @Column(name = "join_date")
     private LocalDate joinDate;
-
-    // 생성자, getter, setter 등
 }
 

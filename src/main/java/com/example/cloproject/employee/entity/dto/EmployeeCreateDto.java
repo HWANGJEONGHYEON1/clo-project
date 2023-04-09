@@ -1,11 +1,10 @@
-package com.example.cloproject.employee.dto;
+package com.example.cloproject.employee.entity.dto;
 
 import com.example.cloproject.config.LocalDateDeserializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.NonNull;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
