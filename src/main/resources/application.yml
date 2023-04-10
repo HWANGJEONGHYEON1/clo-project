@@ -1,4 +1,8 @@
 spring:
+#  thymeleaf:
+#    prefix: classpath:/templates/
+#    suffix: .html
+
   datasource:
     driverClassName: org.h2.Driver
     url: jdbc:h2:mem:testdb

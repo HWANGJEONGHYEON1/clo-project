@@ -1,4 +1,4 @@
-package com.example.cloproject.employee.controller;
+package com.example.cloproject;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -11,6 +11,6 @@ public class HomeController {
     @GetMapping("/")
     public String home() {
         log.info("index");
-        return "home";
+        return "index";
     }
 }

@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>File and Textarea Upload</title>
-    <script src="../static/index.js"></script>
-
 </head>
 <body>
 <form id="myForm">
@@ -12,5 +10,31 @@
     <textarea id="myTextArea"></textarea>
     <button type="button" id="mySubmitButton">Submit</button>
 </form>
+
+<script type="text/javascript">
+    window.onload = function(){
+
+        document.getElementById("#mySubmitButton").addEventListener('click', function() {
+            console.log("# click");
+
+            const fileInput = document.querySelector("#myFileInput");
+            const textArea = document.querySelector("#myTextArea");
+
+            const formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+            formData.append("text", textArea.value);
+
+            fetch("http://localhost:8080/employee", {
+                method: "POST",
+                body: formData
+            }).then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                }).catch(error => {
+                console.error(error);
+            });
+        });
+    }
+</script>
 </body>
 </html>
