@@ -3,6 +3,7 @@ package com.example.cloproject.employee;
 import com.example.cloproject.common.exception.FileEmptyException;
 import com.example.cloproject.employee.repository.EmployeeRepository;
 import com.example.cloproject.employee.service.EmployeeService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +26,7 @@ class EmployeeServiceTest {
     private EmployeeRepository employeeRepository;
 
     @Test
+    @DisplayName("csv 파일 업로드시 성공 테스트")
     void addEmployeesFromCsvFileTest() throws IOException {
         final ClassPathResource resource = new ClassPathResource("sample.csv");
         MockMultipartFile file = new MockMultipartFile("test.csv", "test", "text/csv",resource.getInputStream());
@@ -35,6 +37,7 @@ class EmployeeServiceTest {
     }
 
     @Test
+    @DisplayName("json 파일 업로드시 성공 테스트")
     void addEmployeesFromJsonFileTest() throws IOException {
         final ClassPathResource resource = new ClassPathResource("sample.json");
 
@@ -54,6 +57,7 @@ class EmployeeServiceTest {
     }
 
     @Test
+    @DisplayName("올바르지 않은 파일 업로드시 에러 발생 테스트")
     void addFileException() {
         MockMultipartFile mockMultipartFile = new MockMultipartFile("test", (byte[]) null);
 
@@ -62,12 +66,14 @@ class EmployeeServiceTest {
     }
 
     @Test
+    @DisplayName("Content-type이 'text/csv' 일 경우 정보 저장")
     void addEmployeesFromCsvRequestBody() throws IOException {
         employeeService.addEmployeesFromCsvRequestBody(TestHelper.CSV_BODY);
         assertThat(employeeRepository.findAll().size()).isEqualTo(3);
     }
 
     @Test
+    @DisplayName("Content-type이 'application/json' 일 경우 정보 저장")
     void addEmployeesFromRequestBody() {
         employeeService.addEmployeesFromRequestBody(TestHelper.CREATE_DTO_LIST);
 
