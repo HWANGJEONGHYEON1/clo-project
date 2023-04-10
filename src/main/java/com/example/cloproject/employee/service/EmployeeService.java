@@ -21,13 +21,11 @@ import java.util.List;
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final CsvMapper csvMapper;
-    private final ObjectMapper objectMapper;
-    private final List<FileTypeConvertor> fileTypeConvertors;
+    private List<FileTypeConvertor> fileTypeConvertors;
 
-    public EmployeeService(EmployeeRepository employeeRepository, CsvMapper csvMapper, ObjectMapper objectMapper, List<FileTypeConvertor> fileTypeConvertors) {
+    public EmployeeService(EmployeeRepository employeeRepository, CsvMapper csvMapper, ObjectMapper objectMapper) {
         this.employeeRepository = employeeRepository;
         this.csvMapper = csvMapper;
-        this.objectMapper = objectMapper;
         this.fileTypeConvertors = List.of(new CsvConvertor(csvMapper), new JsonConvertor(objectMapper));
     }
 
@@ -48,7 +46,7 @@ public class EmployeeService {
             }
         }
 
-        throw new NotSupportedFileTypeException("지원하지 않는 파일 형식입니다.");
+        throw new NotSupportedFileTypeException("File format is not supported");
     }
 
     public void addEmployeesFromCsvRequestBody(String body) throws IOException {

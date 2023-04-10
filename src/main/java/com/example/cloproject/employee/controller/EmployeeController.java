@@ -25,19 +25,6 @@ public class EmployeeController {
         return new ResponseEntity<>("File uploaded successfully", HttpStatus.CREATED);
     }
 
-//
-//    @PostMapping("/csv")
-//    public ResponseEntity<String> addEmployeesFromCsv(MultipartFile file) throws IOException {
-//        employeeService.addEmployeesFromFile(file, false);
-//        return new ResponseEntity<>("File uploaded successfully", HttpStatus.CREATED);
-//    }
-//
-//    @PostMapping("/json")
-//    public ResponseEntity<String> addEmployeesFromJson(@RequestParam("file") MultipartFile file) throws IOException {
-//        employeeService.addEmployeesFromFile(file, true);
-//        return new ResponseEntity<>("File uploaded successfully", HttpStatus.CREATED);
-//    }
-
     @PostMapping(consumes = "text/csv")
     public ResponseEntity<String> addEmployeesFromCsvBody(@RequestBody String body) throws IOException {
         employeeService.addEmployeesFromCsvRequestBody(body);
