@@ -20,7 +20,7 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @RequestMapping
-    public ResponseEntity<String> addEmployees(MultipartFile file, @RequestBody String body) throws IOException {
+    public ResponseEntity<String> addEmployees(MultipartFile file) throws IOException {
         employeeService.addEmployeesFromFile(file);
         return new ResponseEntity<>("File uploaded successfully", HttpStatus.CREATED);
     }

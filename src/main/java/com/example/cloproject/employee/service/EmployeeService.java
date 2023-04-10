@@ -40,9 +40,9 @@ public class EmployeeService {
     }
 
     private List<EmployeeCreateDto> getEmployeeDtos(MultipartFile file) throws IOException {
-        for (FileTypeConvertor fileTypeConvertor : fileTypeConvertors) {
-            if (fileTypeConvertor.isSupportedFormat(file.getContentType())) {
-                return fileTypeConvertor.convert(file);
+        for (FileTypeConvertor typeConvertor : fileTypeConvertors) {
+            if (typeConvertor.isSupportedFormat(file.getContentType())) {
+                return typeConvertor.convert(file);
             }
         }
 
