@@ -6,6 +6,9 @@ import com.example.cloproject.employee.entity.Employee;
 import com.example.cloproject.employee.entity.dto.EmployeeCreateDto;
 import com.example.cloproject.employee.mapper.EmployeeMapper;
 import com.example.cloproject.employee.repository.EmployeeRepository;
+import com.example.cloproject.employee.service.convertor.CsvConvertor;
+import com.example.cloproject.employee.service.convertor.FileTypeConvertor;
+import com.example.cloproject.employee.service.convertor.JsonConvertor;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
@@ -21,7 +24,7 @@ import java.util.List;
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final CsvMapper csvMapper;
-    private List<FileTypeConvertor> fileTypeConvertors;
+    private final List<FileTypeConvertor> fileTypeConvertors;
 
     public EmployeeService(EmployeeRepository employeeRepository, CsvMapper csvMapper, ObjectMapper objectMapper) {
         this.employeeRepository = employeeRepository;
@@ -30,7 +33,7 @@ public class EmployeeService {
     }
 
     public void addEmployeesFromFile(MultipartFile file) throws IOException {
-        if (file.isEmpty()) {
+        if (file == null) {
             throw new FileEmptyException("File is empty");
         }
 
@@ -50,8 +53,11 @@ public class EmployeeService {
     }
 
     public void addEmployeesFromCsvRequestBody(String body) throws IOException {
+        StringBuilder csvBody = new StringBuilder();
+        csvBody.append("name, email, tel, joined\n");
+        csvBody.append(body);
         CsvSchema csvSchema = csvMapper.schemaFor(EmployeeCreateDto.class).withHeader().withColumnReordering(true);
-        MappingIterator<EmployeeCreateDto> it = csvMapper.readerFor(EmployeeCreateDto.class).with(csvSchema).readValues(body);
+        MappingIterator<EmployeeCreateDto> it = csvMapper.readerFor(EmployeeCreateDto.class).with(csvSchema).readValues(csvBody.toString());
         final List<Employee> employees = employeeDtosToEntities(it.readAll());
         employeeRepository.saveAll(employees);
     }
@@ -59,6 +65,10 @@ public class EmployeeService {
     public void addEmployeesFromRequestBody(List<EmployeeCreateDto> employeeDtos) {
         final List<Employee> employees = employeeDtosToEntities(employeeDtos);
         employeeRepository.saveAll(employees);
+    }
+
+    public void addEmployeesFromFormData(String employeeDtos) {
+//        employeeRepository.saveAll(employees);
     }
 
     private List<Employee> employeeDtosToEntities(List<EmployeeCreateDto> createDtos) {
