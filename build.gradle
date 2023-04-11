@@ -6,7 +6,6 @@ plugins {
 
 ext {
     mapstructVersion = "1.4.2.Final"
-    swaggerVersion = "3.0.0"
 }
 
 java {
@@ -36,18 +35,20 @@ dependencies {
     // validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+    // lombok
+    annotationProcessor 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok'
+
     // mapstruct
     implementation("org.mapstruct:mapstruct:${mapstructVersion}")
     annotationProcessor("org.mapstruct:mapstruct-processor:${mapstructVersion}")
 
     // swagger
-    implementation("io.springfox:springfox-boot-starter:${swaggerVersion}")
+    implementation("io.springfox:springfox-boot-starter:3.0.0")
 
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.13.1'
 
-    compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
