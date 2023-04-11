@@ -1,6 +1,7 @@
 package com.example.cloproject.employee;
 
 import com.example.cloproject.common.exception.FileEmptyException;
+import com.example.cloproject.common.exception.NotSupportedFileTypeException;
 import com.example.cloproject.employee.repository.EmployeeRepository;
 import com.example.cloproject.employee.service.EmployeeService;
 import org.junit.jupiter.api.DisplayName;
@@ -62,6 +63,14 @@ class EmployeeServiceTest {
         MockMultipartFile mockMultipartFile = new MockMultipartFile("test", (byte[]) null);
 
         assertThatThrownBy(() -> employeeService.addEmployeesFromFile(mockMultipartFile))
+                .isInstanceOf(NotSupportedFileTypeException.class);
+    }
+
+    @Test
+    @DisplayName("파일 없을 시 에러 발생 테스트")
+    void notExistFileException() {
+
+        assertThatThrownBy(() -> employeeService.addEmployeesFromFile(null))
                 .isInstanceOf(FileEmptyException.class);
     }
 

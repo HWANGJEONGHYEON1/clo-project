@@ -8,7 +8,6 @@ import java.util.List;
 public class TestHelper {
 
     public static final String CSV_BODY =
-            "name, email, tel, joined\n" +
             "김철수, charles@clovf.com,1075312468,2018.03.07\n" +
             "박영희, matilda@clovf.com,1087654321,2021.04.28\n" +
             "홍길동, kildong.hong@clovf.com,1012345678,2015.08.15\n";
