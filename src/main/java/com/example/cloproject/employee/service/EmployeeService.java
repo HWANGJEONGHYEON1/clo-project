@@ -1,9 +1,11 @@
 package com.example.cloproject.employee.service;
 
 import com.example.cloproject.common.exception.FileEmptyException;
+import com.example.cloproject.common.exception.NotExistEmployeeException;
 import com.example.cloproject.common.exception.NotSupportedFileTypeException;
 import com.example.cloproject.employee.entity.Employee;
 import com.example.cloproject.employee.entity.dto.EmployeeCreateDto;
+import com.example.cloproject.employee.entity.dto.EmployeeResponseDto;
 import com.example.cloproject.employee.mapper.EmployeeMapper;
 import com.example.cloproject.employee.repository.EmployeeRepository;
 import com.example.cloproject.employee.service.convertor.CsvConvertor;
@@ -13,12 +15,14 @@ import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
@@ -67,16 +71,28 @@ public class EmployeeService {
         employeeRepository.saveAll(employees);
     }
 
-    public void addEmployeesFromFormData(String employeeDtos) {
-//        employeeRepository.saveAll(employees);
-    }
-
     private List<Employee> employeeDtosToEntities(List<EmployeeCreateDto> createDtos) {
         List<Employee> employees = new ArrayList<>();
         for (EmployeeCreateDto dto : createDtos) {
             employees.add(EmployeeMapper.INSTANCE.toEntity(dto));
         }
 
+
         return employees;
+    }
+
+    public List<EmployeeResponseDto> getEmployees(int page, int pageSize) {
+        return employeeRepository.findAll(PageRequest.of(page, pageSize))
+                .toList()
+                .stream()
+                .map(EmployeeMapper.INSTANCE::toResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    public EmployeeResponseDto getEmployee(String name) {
+        return EmployeeMapper.INSTANCE.toResponseDto(
+                employeeRepository.findByName(name)
+                .orElseThrow(() -> new NotExistEmployeeException("User does not exist"))
+        );
     }
 }

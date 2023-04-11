@@ -2,6 +2,7 @@ package com.example.cloproject.employee.mapper;
 
 import com.example.cloproject.employee.entity.Employee;
 import com.example.cloproject.employee.entity.dto.EmployeeCreateDto;
+import com.example.cloproject.employee.entity.dto.EmployeeResponseDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -12,5 +13,5 @@ public interface EmployeeMapper {
 
     Employee toEntity(EmployeeCreateDto dto);
 
-    EmployeeCreateDto toResponseDto(Employee entity);
+    EmployeeResponseDto toResponseDto(Employee employee);
 }
