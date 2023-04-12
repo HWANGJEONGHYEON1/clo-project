@@ -1,23 +1,15 @@
 package com.example.cloproject.common.exception;
 
-public class NotSupportedFileTypeException extends RuntimeException {
-    public NotSupportedFileTypeException() {
-        super();
+import com.example.cloproject.common.response.ErrorCode;
+
+public class NotSupportedFileTypeException extends BusinessException {
+
+
+    public NotSupportedFileTypeException(ErrorCode errorCode) {
+        super(errorCode);
     }
 
-    public NotSupportedFileTypeException(String message) {
-        super(message);
-    }
-
-    public NotSupportedFileTypeException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public NotSupportedFileTypeException(Throwable cause) {
-        super(cause);
-    }
-
-    protected NotSupportedFileTypeException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+    public NotSupportedFileTypeException(ErrorCode errorCode, String detail) {
+        super(errorCode, detail);
     }
 }

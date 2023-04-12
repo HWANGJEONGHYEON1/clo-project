@@ -1,24 +1,14 @@
 package com.example.cloproject.common.exception;
 
-public class FileEmptyException extends RuntimeException {
+import com.example.cloproject.common.response.ErrorCode;
 
-    public FileEmptyException() {
-        super();
+public class FileEmptyException extends BusinessException {
+
+    public FileEmptyException(ErrorCode errorCode) {
+        super(errorCode);
     }
 
-    public FileEmptyException(String message) {
-        super(message);
-    }
-
-    public FileEmptyException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public FileEmptyException(Throwable cause) {
-        super(cause);
-    }
-
-    protected FileEmptyException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+    public FileEmptyException(ErrorCode errorCode, String detail) {
+        super(errorCode, detail);
     }
 }
