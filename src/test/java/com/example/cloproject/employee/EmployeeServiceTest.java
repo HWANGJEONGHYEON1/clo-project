@@ -1,7 +1,6 @@
 package com.example.cloproject.employee;
 
 import com.example.cloproject.common.exception.FileEmptyException;
-import com.example.cloproject.common.exception.NotExistEmployeeException;
 import com.example.cloproject.common.exception.NotSupportedFileTypeException;
 import com.example.cloproject.employee.entity.Employee;
 import com.example.cloproject.employee.entity.dto.EmployeeResponseDto;
@@ -127,13 +126,13 @@ class EmployeeServiceTest {
     @MethodSource("getUserName")
     @DisplayName("직원 기본 연락 정보 조회")
     void getEmployee(String name) {
-        final EmployeeResponseDto findEmployee = employeeService.getEmployee(name);
-        final Employee dbEmployee = employeeRepository.findByName(name).get();
+        final List<EmployeeResponseDto> findEmployee = employeeService.getEmployee(name);
+        final List<Employee> dbEmployee = employeeRepository.findByName(name);
 
-        assertThat(findEmployee.getName()).isEqualTo(dbEmployee.getName());
-        assertThat(findEmployee.getEmail()).isEqualTo(dbEmployee.getEmail());
-        assertThat(findEmployee.getId()).isEqualTo(dbEmployee.getId());
-        assertThat(findEmployee.getTel()).isEqualTo(dbEmployee.getTel());
+        assertThat(findEmployee.get(0).getName()).isEqualTo(dbEmployee.get(0).getName());
+        assertThat(findEmployee.get(0).getEmail()).isEqualTo(dbEmployee.get(0).getEmail());
+        assertThat(findEmployee.get(0).getId()).isEqualTo(dbEmployee.get(0).getId());
+        assertThat(findEmployee.get(0).getTel()).isEqualTo(dbEmployee.get(0).getTel());
     }
 
     static Stream<Arguments> getUserName() {
@@ -147,9 +146,9 @@ class EmployeeServiceTest {
 
 
     @Test
-    @DisplayName("존재하지 않은 회원 조회시 에러")
+    @DisplayName("존재하지 않은 회원 조회시 리스트 0")
     void selectNotExistEmployeeException() {
-        assertThatThrownBy(() -> employeeService.getEmployee("NONE"))
-                .isInstanceOf(NotExistEmployeeException.class);
+        final List<EmployeeResponseDto> none = employeeService.getEmployee("NONE");
+        assertThat(none.size()).isEqualTo(0);
     }
 }
