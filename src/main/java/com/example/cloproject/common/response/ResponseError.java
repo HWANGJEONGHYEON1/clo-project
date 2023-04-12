@@ -1,11 +1,13 @@
 package com.example.cloproject.common.response;
 
 import lombok.Builder;
+import lombok.Getter;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.FieldError;
 
 @Builder
+@Getter
 public class ResponseError {
 
     private String code;
