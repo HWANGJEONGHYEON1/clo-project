@@ -1,7 +1,6 @@
 package com.example.cloproject.employee.service;
 
 import com.example.cloproject.common.exception.FileEmptyException;
-import com.example.cloproject.common.exception.NotExistEmployeeException;
 import com.example.cloproject.common.exception.NotSupportedFileTypeException;
 import com.example.cloproject.employee.entity.Employee;
 import com.example.cloproject.employee.entity.dto.EmployeeCreateDto;
@@ -24,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.example.cloproject.common.response.ErrorCode.*;
+
 @Service
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
@@ -38,7 +39,7 @@ public class EmployeeService {
 
     public void addEmployeesFromFile(MultipartFile file) throws IOException {
         if (file == null) {
-            throw new FileEmptyException("File is empty");
+            throw new FileEmptyException(PARAM_INVALID_ERROR_E003);
         }
 
         List<Employee> employees = employeeDtosToEntities(getEmployeeDtos(file));
@@ -53,7 +54,7 @@ public class EmployeeService {
             }
         }
 
-        throw new NotSupportedFileTypeException("File format is not supported");
+        throw new NotSupportedFileTypeException(PARAM_INVALID_ERROR_E001);
     }
 
     public void addEmployeesFromCsvRequestBody(String body) throws IOException {
@@ -77,7 +78,6 @@ public class EmployeeService {
             employees.add(EmployeeMapper.INSTANCE.toEntity(dto));
         }
 
-
         return employees;
     }
 
@@ -89,10 +89,11 @@ public class EmployeeService {
                 .collect(Collectors.toList());
     }
 
-    public EmployeeResponseDto getEmployee(String name) {
-        return EmployeeMapper.INSTANCE.toResponseDto(
-                employeeRepository.findByName(name)
-                .orElseThrow(() -> new NotExistEmployeeException("User does not exist"))
-        );
+    // 동명이인일 경우 리스트로 보여준다.
+    public List<EmployeeResponseDto> getEmployee(String name) {
+        return employeeRepository.findByName(name)
+                .stream()
+                .map(EmployeeMapper.INSTANCE::toResponseDto)
+                .collect(Collectors.toList());
     }
 }
