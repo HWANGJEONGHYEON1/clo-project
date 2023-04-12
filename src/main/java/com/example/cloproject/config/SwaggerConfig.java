@@ -16,8 +16,7 @@ public class SwaggerConfig {
 
     @Bean
     public Docket api() {
-        log.debug("swagger 설정시작");
-        return new Docket(DocumentationType.SWAGGER_2)
+        return new Docket(DocumentationType.OAS_30)
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
