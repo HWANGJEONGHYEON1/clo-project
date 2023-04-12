@@ -13,31 +13,39 @@ document.getElementById("mySubmitButton").addEventListener('click', function() {
     }
 
     if (textArea.value) {
-        fetch('http://localhost:8080/employee', {
+        fetch('http://localhost:8080/api/employee', {
             method: 'POST', // 또는 'PUT'
             headers: {
                 'Content-Type': isJSONString(textArea.value) ? 'application/json' : 'text/plain',
             },
             body: textArea.value,
-        })
-        .then((response) => {
-            console.log(response)
-        })
-        .then((data) => {
-            alert('registration success');
-        })
-        .catch((error) => {
-            alert('registration fail : ' + error);
-        });
+        }).then(response => {
+            if (!response.ok) { // 응답 코드가 2xx가 아닌 경우
+                return response.json().then(res => {throw new Error(res[0].detail)});
+            }
+            return response.text();
+           })
+            .then(data => {
+                alert(data);
+            })
+            .catch(error => {
+                alert(error);
+            });
     } else {
-        fetch("http://localhost:8080/employee", {
+        fetch("http://localhost:8080/api/employee", {
             method: "POST",
             body: formData
-        }).then(response => response.json())
+        }).then(response => {
+            if (!response.ok) { // 응답 코드가 2xx가 아닌 경우
+                return response.json().then(res => {throw new Error(res[0].detail)});
+            }
+            return response.text();
+        })
         .then(data => {
-            console.log(data);
-        }).catch(error => {
-            console.error(error);
+            alert(data);
+        })
+        .catch(error => {
+            alert(error);
         });
     }
 
