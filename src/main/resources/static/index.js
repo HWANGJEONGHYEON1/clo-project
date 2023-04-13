@@ -12,6 +12,14 @@ document.getElementById("mySubmitButton").addEventListener('click', function() {
         return ;
     }
 
+    function getResponse(response) {
+        if (!response.ok) { // 응답 코드가 2xx가 아닌 경우
+            return response.json().then(res => {throw new Error(res[0].detail);});
+        }
+
+        window.location.href = response.headers.get('Location');
+    }
+
     if (textArea.value) {
         fetch('http://localhost:8080/api/employee', {
             method: 'POST', // 또는 'PUT'
@@ -20,31 +28,17 @@ document.getElementById("mySubmitButton").addEventListener('click', function() {
             },
             body: textArea.value,
         }).then(response => {
-            if (!response.ok) { // 응답 코드가 2xx가 아닌 경우
-                return response.json().then(res => {throw new Error(res[0].detail)});
-            }
-            return response.text();
-           })
-            .then(data => {
-                alert(data);
-            })
-            .catch(error => {
-                alert(error);
-            });
+            return getResponse(response);
+        }).catch(error => {
+            alert(error);
+        });
     } else {
         fetch("http://localhost:8080/api/employee", {
             method: "POST",
             body: formData
         }).then(response => {
-            if (!response.ok) { // 응답 코드가 2xx가 아닌 경우
-                return response.json().then(res => {throw new Error(res[0].detail)});
-            }
-            return response.text();
-        })
-        .then(data => {
-            alert(data);
-        })
-        .catch(error => {
+            return getResponse(response);
+        }).catch(error => {
             alert(error);
         });
     }
