@@ -31,7 +31,7 @@
 ## 실행방법
 - git clone https://github.com/HWANGJEONGHYEON1/clo-project.git
 - cd clo-project
-- gradle build test 
+- ./gradlew clean build test
 - java -jar build/libs/clo-project-0.0.1-SNAPSHOT.jar
 - http://localhost:8080 접속
   - 파일 업로드 (sample 파일은 test/java/resources에 두개 있습니다.)
