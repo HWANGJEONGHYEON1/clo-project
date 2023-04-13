@@ -6,6 +6,7 @@ import com.example.cloproject.employee.entity.Employee;
 import com.example.cloproject.employee.entity.dto.EmployeeResponseDto;
 import com.example.cloproject.employee.repository.EmployeeRepository;
 import com.example.cloproject.employee.service.EmployeeService;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -95,10 +96,17 @@ class EmployeeServiceTest {
     }
 
     @Test
+    @DisplayName("Content-type이 'text/csv' 일 경우 잚못된 형식으로 왔을 시 에러")
+    void addEmployeesFromCsvRequestBodyException() {
+        assertThatThrownBy(() -> employeeService.addEmployeesFromCsvRequestBody(TestHelper.CSV_BODY_HEADER))
+                .isInstanceOf(JsonMappingException.class);
+    }
+
+
+    @Test
     @DisplayName("Content-type이 'application/json' 일 경우 정보 저장")
     void addEmployeesFromRequestBody() {
         employeeService.addEmployeesFromRequestBody(TestHelper.CREATE_DTO_LIST);
-
         assertThat(employeeRepository.findAll().size()).isEqualTo(52);
     }
 
