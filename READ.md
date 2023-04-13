@@ -23,3 +23,8 @@
 
 ## API 문서 (서비스 구동 시)
 - http://localhost:8080/swagger-ui/index.html
+
+## 실행방법
+- git clone https://github.com/HWANGJEONGHYEON1/clo-project.git
+- gradle install
+-  ./gradlew bootRun
