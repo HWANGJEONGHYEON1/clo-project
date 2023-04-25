@@ -7,6 +7,7 @@ import com.example.cloproject.employee.entity.dto.EmployeeResponseDto;
 import com.example.cloproject.employee.repository.EmployeeRepository;
 import com.example.cloproject.employee.service.EmployeeService;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -49,6 +50,23 @@ class EmployeeServiceTest {
         employeeService.addEmployeesFromFile(file);
 
         assertThat(employeeRepository.findAll().size()).isEqualTo(53);
+    }
+
+    @Test
+    @DisplayName("csv 파일 업로드시 성공 테스트")
+    void addEmployeesFromCsvFileTest_trim() throws IOException {
+        final ClassPathResource resource = new ClassPathResource("sample.csv");
+        MockMultipartFile file = new MockMultipartFile("test.csv", "test", "text/csv", resource.getInputStream());
+
+        employeeService.addEmployeesFromFile(file);
+        // 홍길동, kildong.hong@clovf.com,1012345678,2015.08.15
+        Employee 홍길동 = employeeRepository.findByName("홍길동").get(0);
+        //홍길동, kildong.hong@clovf.com,1012345678,2015.08.15
+        Assertions.assertAll(() -> {
+            assertThat(홍길동.getEmail()).isEqualTo("kildong.hong@clovf.com");
+            assertThat(홍길동.getTel()).isEqualTo("1012345678");
+            assertThat(홍길동.getName()).isEqualTo("홍길동");
+        });
     }
 
     @Test
@@ -151,7 +169,6 @@ class EmployeeServiceTest {
                 Arguments.of("테스트40")
         );
     }
-
 
     @Test
     @DisplayName("존재하지 않은 회원 조회시 리스트 0")

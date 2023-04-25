@@ -13,7 +13,6 @@ import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 @Builder
 public class EmployeeCreateDto {
 
@@ -33,4 +32,20 @@ public class EmployeeCreateDto {
     @JsonProperty(value = "joined")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate joinDate;
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email.trim();
+    }
+
+    public String getTel() {
+        return tel.trim();
+    }
+
+    public LocalDate getJoinDate() {
+        return joinDate;
+    }
 }

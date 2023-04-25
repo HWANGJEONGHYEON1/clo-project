@@ -27,9 +27,9 @@ public class TestHelper {
     // 50 employee test data insert
     public static List<EmployeeCreateDto> createMockEmployees() {
         List<EmployeeCreateDto> createDtos = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
-            createDtos.add(new EmployeeCreateDto("테스트" + i, "test@clovf.com", "1083445555", LocalDate.of(1970 + i, 6, 1)));
-        }
+//        for (int i = 0; i < 50; i++) {
+//            createDtos.add(new EmployeeCreateDto(" 테스트" + i, "test@clovf.com", "1083445555", LocalDate.of(1970 + i, 6, 1)));
+//        }
 
         return createDtos;
     }
