@@ -8,12 +8,14 @@ import com.example.cloproject.employee.entity.dto.EmployeeResponseDto;
 import com.example.cloproject.employee.mapper.EmployeeMapper;
 import com.example.cloproject.employee.repository.EmployeeRepository;
 import com.example.cloproject.employee.service.convertor.CsvConvertor;
+import com.example.cloproject.employee.service.convertor.FileComposite;
 import com.example.cloproject.employee.service.convertor.FileTypeConvertor;
 import com.example.cloproject.employee.service.convertor.JsonConvertor;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,16 +28,12 @@ import java.util.stream.Collectors;
 import static com.example.cloproject.common.response.ErrorCode.*;
 
 @Service
+@RequiredArgsConstructor
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final CsvMapper csvMapper;
-    private final List<FileTypeConvertor> fileTypeConvertors;
+    private final FileComposite fileComposite;
 
-    public EmployeeService(EmployeeRepository employeeRepository, CsvMapper csvMapper, ObjectMapper objectMapper) {
-        this.employeeRepository = employeeRepository;
-        this.csvMapper = csvMapper;
-        this.fileTypeConvertors = List.of(new CsvConvertor(csvMapper), new JsonConvertor(objectMapper));
-    }
 
     public void addEmployeesFromFile(MultipartFile file) throws IOException {
         if (file == null) {
@@ -48,13 +46,8 @@ public class EmployeeService {
     }
 
     private List<EmployeeCreateDto> getEmployeeDtos(MultipartFile file) throws IOException {
-        for (FileTypeConvertor typeConvertor : fileTypeConvertors) {
-            if (typeConvertor.isSupportedFormat(file.getContentType())) {
-                return typeConvertor.convert(file);
-            }
-        }
-
-        throw new NotSupportedFileTypeException(PARAM_INVALID_ERROR_E001);
+        FileTypeConvertor supportedFile = fileComposite.isSupportedFile(file);
+        return supportedFile.convert(file);
     }
 
     public void addEmployeesFromCsvRequestBody(String body) throws IOException {
